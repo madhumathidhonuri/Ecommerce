@@ -1,0 +1,58 @@
+body {
+    font-family: Arial, sans-serif;
+}
+.container {
+    margin-top: 40px;
+}
+.container h1 {
+    font-size: 3rem;
+    color:cadetblue;
+}
+.typewriter-container {
+    font-size: 1rem;
+    font-weight: bold;
+    color:palevioletred;
+    border-right: 2px solid white;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: typing 5s steps(30, end), blink 0.5s step-end infinite;
+}
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink {
+    from {
+        border-right-color:white;
+    }
+    to {
+        border-right-color: transparent;
+    }
+}
+.card-img-top {
+    width: 100%;
+    height: auto; 
+    max-height: 200px;
+    object-fit: cover; 
+    display: block;
+    background-color: #f8f9fa; 
+}
+
+.card-body {
+    padding: 20px;
+}
+.card-title {
+    font-size: 1.25em;
+    margin-bottom: 20px;
+}
+.btn {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}

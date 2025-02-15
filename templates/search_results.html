@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+</head>
+<body>
+{% include 'navbar.html' %}
+<h1>Search Results for "{{ query }}"</h1>
+<p>Found {{ results|length }} results</p>
+
+{% if results %}
+    <ul>
+        {% for item in results %}
+            <li>
+                <a href="{% url 'product_detail' product_type=item.product_type|lower id=item.product.id %}">
+                    {% if item.product.image %}
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.brandname }}" width="100">
+                    {% endif %}
+                    {% if item.product.brandname %}
+                        <h3>{{ item.product.brandname }}</h3>
+                    {% endif %}
+                    {% if item.product.price %}
+                        <p>₹{{ item.product.price }}</p>
+                    {% endif %}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No products found.</p>
+{% endif %}
+</body>
+</html>

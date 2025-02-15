@@ -1,0 +1,16 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.brandname }}</title>
+</head>
+<body>
+    <h1>{{ product.brandname }}</h1>
+    <img src="{{ product.image.url }}" alt="{{ product.brandname }}" width="300">
+    <p>Price: ₹{{ product.price }}</p>
+    <p>Description: {{ product.description }}</p>
+    <a href="{% url 'add_to_cart' product_type=product.product_type product_id=product.id %}">Add to Cart</a>
+</body>
+</html>

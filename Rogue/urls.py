@@ -1,0 +1,36 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.website, name='website'),
+    path('register/', views.register, name='register'),
+    path('login/', views.user_login, name='login'),
+    path('contact/', views.contact, name='contact'),
+    path('cart/', views.cart, name='cart'),
+    path('account/', views.account, name='account'),
+    path('home/', views.home, name='home'),
+    path('navbar/', views.navbar, name='navbar'),
+    path('tshirts/', views.all_tshirts, name='all_tshirts'),
+    path('shirts/', views.all_shirts, name='all_shirts'),
+    path('jeans/', views.all_jeans, name='all_jeans'),
+    path('jackets/', views.all_jackets, name='all_jackets'),
+    path('formals/', views.all_formals, name='all_formals'),
+    path('cargos/', views.all_cargos, name='all_cargos'),
+    path('hoodies/', views.all_hoodies, name='all_hoodies'),
+    path('trousers/', views.all_trousers, name='all_trousers'),
+    path('watches/', views.all_watches, name='all_watches'),
+    path('footwear/', views.all_footwear, name='all_footwear'),
+    path('glasses/', views.all_glasses, name='all_glasses'),
+    path('profile/', views.profile, name='profile'),
+    path('orders/', views.orders, name='orders'),
+    path('logout/', views.logout_view, name='logout'),
+    path('add_to_cart/<int:product_id>/<str:product_type>/', views.add_to_cart, name='add_to_cart'), 
+    path('remove_from_cart/<int:cart_item_id>/', views.remove_from_cart, name='remove_from_cart'), 
+    path('checkout/', views.checkout, name='checkout'),
+    path('place_order/', views.place_order, name='place_order'),
+    path('order_confirmation/',views.order_confirmation,name='order_confirmation'),
+    path('search/',views.search_results,name='search_results'),
+    path('product/<str:product_type>/<int:id>/', views.product_detail, name='product_detail'),
+     path('place_order/<str:product_type>/<int:product_id>/', views.place_order, name='place_order'),
+
+]
