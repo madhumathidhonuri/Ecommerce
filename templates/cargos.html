@@ -21,7 +21,7 @@
                         <h5 class="card-title">{{ cargo.brandname }}</h5>
                         <p><strong>Color:</strong> {{ cargo.color }}</p>
                         <p><strong>Price:</strong> ₹{{ cargo.price }}</p>
-                        <a href="#" class="btn btn-primary">Add to Cart</a>
+                        <a href="{% url 'add_to_cart' cargo.id 'cargos' %}" class="btn btn-primary">Add to Cart</a>
                     </div>
                 </div>
             </div>
