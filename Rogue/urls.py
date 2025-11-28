@@ -31,6 +31,6 @@ urlpatterns = [
     path('order_confirmation/',views.order_confirmation,name='order_confirmation'),
     path('search/',views.search_results,name='search_results'),
     path('product/<str:product_type>/<int:id>/', views.product_detail, name='product_detail'),
-     path('place_order/<str:product_type>/<int:product_id>/', views.place_order, name='place_order'),
+    path('place_order/<str:product_type>/<int:product_id>/', views.place_order, name='place_order'),
 
 ]

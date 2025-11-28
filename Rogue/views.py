@@ -10,27 +10,27 @@ from django.contrib.auth.decorators import login_required
 from django.apps import apps
 from django.contrib.contenttypes.models import ContentType
 PRODUCT_MODELS = {
-    'tshirt': 'TShirts',
-    'shirt': 'Shirts',
+    'tshirts': 'TShirts',
+    'shirts': 'Shirts',
     'jeans': 'Jeans',
-    'jacket': 'Jackets',
-    'formal': 'Formals',
-    'cargo': 'Cargos',
-    'hoodie': 'Hoodies',
-    'trouser': 'Trousers',
-    'watch': 'Watches',
+    'jackets': 'Jackets',
+    'formals': 'Formals',
+    'cargos': 'Cargos',
+    'hoodies': 'Hoodies',
+    'trousers': 'Trousers',
+    'watches': 'Watches',
     'footwear': 'Footwear',
-    'glass': 'Glasses'
+    'glasses': 'Glasses'
 }
 
 @login_required
 def add_to_cart(request, product_id, product_type):
-    product_type = product_type.lower()  # Ensure product type is lowercase
-    print(f"Product Type: {product_type}, Product ID: {product_id}")  # Debugging
+    product_type = product_type.lower()  
+    print(f"Product Type: {product_type}, Product ID: {product_id}") 
 
     model_name = PRODUCT_MODELS.get(product_type)
     if model_name is None:
-        print("Invalid product type")  # Debugging
+        print("Invalid product type")  
         messages.error(request, 'Invalid product type')
         return redirect('home')
 
@@ -38,7 +38,7 @@ def add_to_cart(request, product_id, product_type):
         ProductModel = apps.get_model('Rogue', model_name)
         product = get_object_or_404(ProductModel, id=product_id)
     except Exception as e:
-        print(f"Error fetching product: {e}")  # Debugging
+        print(f"Error fetching product: {e}") 
         messages.error(request, 'Error fetching product')
         return redirect('home')
 
@@ -52,7 +52,7 @@ def add_to_cart(request, product_id, product_type):
         cart_item.quantity += 1
     cart_item.save()
 
-    print(f"Added to cart: {product.brandname}")  # Debugging
+    print(f"Added to cart: {product.brandname}")  
     messages.success(request, f'{product.brandname} added to cart')
     return redirect('cart')
 
@@ -171,66 +171,36 @@ def logout_view(request):
 def search_results(request):
     query = request.GET.get('q', '')
     results = []
+
     if query:
-        tshirts = list(TShirts.objects.filter(brandname__icontains=query))
-        shirts = list(Shirts.objects.filter(brandname__icontains=query))
-        jeans = list(Jeans.objects.filter(brandname__icontains=query))
-        formals = list(Formals.objects.filter(brandname__icontains=query))
-        jackets = list(Jackets.objects.filter(brandname__icontains=query))
-        hoodies = list(Hoodies.objects.filter(brandname__icontains=query))
-        cargos = list(Cargos.objects.filter(brandname__icontains=query))
-        trousers = list(Trousers.objects.filter(brandname__icontains=query))
-        footwear = list(Footwear.objects.filter(brandname__icontains=query))
-        watches = list(Watches.objects.filter(brandname__icontains=query))
-        glasses = list(Glasses.objects.filter(brandname__icontains=query))
-
-        for product in tshirts:
-            results.append({'product': product, 'product_type': 'tshirts'})
-        for product in shirts:
-            results.append({'product': product, 'product_type': 'shirts'})
-        for product in jeans:
-            results.append({'product': product, 'product_type': 'jeans'})
-        for product in formals:
-            results.append({'product': product, 'product_type': 'formals'})
-        for product in jackets:
-            results.append({'product': product, 'product_type': 'jackets'})
-        for product in hoodies:
-            results.append({'product': product, 'product_type': 'hoodies'})
-        for product in cargos:
-            results.append({'product': product, 'product_type': 'cargos'})
-        for product in trousers:
-            results.append({'product': product, 'product_type': 'trousers'})
-        for product in footwear:
-            results.append({'product': product, 'product_type': 'footwear'})
-        for product in watches:
-            results.append({'product': product, 'product_type': 'watches'})
-        for product in glasses:
-            results.append({'product': product, 'product_type': 'glasses'})
-
-    return render(request, 'search_results.html', {'results': results, 'query': query})
-
-@login_required
-def remove_from_cart(request, cart_item_id):
-    cart_item = get_object_or_404(Cart, id=cart_item_id, user=request.user)
-    cart_item.delete()
-    messages.success(request, 'Item removed from cart')
-    return redirect('cart')
-
-@login_required
-def checkout(request):
-    cart_items = Cart.objects.filter(user=request.user)
-    total = 0
-    for item in cart_items:
-        model_name = PRODUCT_MODELS.get(item.product_type.lower())
-        if model_name:
+        for product_type, model_name in PRODUCT_MODELS.items():
             ProductModel = apps.get_model('Rogue', model_name)
-            product = ProductModel.objects.get(id=item.product_id)
-            item.product = product
-            item.total_price = product.price * item.quantity
-            total += item.total_price
+            products = ProductModel.objects.filter(brandname__icontains=query)
+            for product in products:
+                results.append({
+                    'product': product,
+                    'product_type': product_type
+                })
 
-    return render(request, 'checkout.html', {'cart_items': cart_items, 'total': total})
+    return render(request, 'search_results.html', {
+        'results': results,
+        'query': query
+    })
+    
 
+def product_detail(request, product_type, id):
+    model_name = PRODUCT_MODELS.get(product_type.lower())
+    if not model_name:
+        return render(request, '404.html') 
+
+    ProductModel = apps.get_model('Rogue', model_name) 
+    product = get_object_or_404(ProductModel, id=id)
+
+    return render(request, 'product_detail.html', {
+        'product': product,
+        'product_type': product_type
+    })
+    
 @login_required
 def place_order(request):
     cart_items = Cart.objects.filter(user=request.user)
@@ -259,22 +229,33 @@ def place_order(request):
 
 
 @login_required
+def remove_from_cart(request, cart_item_id):
+    cart_item = get_object_or_404(Cart, id=cart_item_id, user=request.user)
+    cart_item.delete()
+    messages.success(request, 'Item removed from cart')
+    return redirect('cart')
+
+@login_required
+def checkout(request):
+    cart_items = Cart.objects.filter(user=request.user)
+    total = 0
+    for item in cart_items:
+        model_name = PRODUCT_MODELS.get(item.product_type.lower())
+        if model_name:
+            ProductModel = apps.get_model('Rogue', model_name)
+            product = ProductModel.objects.get(id=item.product_id)
+            item.product = product
+            item.total_price = product.price * item.quantity
+            total += item.total_price
+
+    return render(request, 'checkout.html', {'cart_items': cart_items, 'total': total})
+
+
+
+@login_required
 def order_confirmation(request):
     return render(request, 'order_confirmation.html')
 
-def product_detail(request, product_type, id):
-    model_name = PRODUCT_MODELS.get(product_type.lower())
-    if not model_name:
-        return render(request, '404.html') 
-
-    ProductModel = apps.get_model('Rogue', model_name) 
-    product = get_object_or_404(ProductModel, id=id)
-
-    return render(request, 'product_detail.html', {
-        'product': product,
-        'product_type': product_type
-    })
-    
 @login_required
 def orders(request):
     cart_items = Cart.objects.filter(user=request.user)

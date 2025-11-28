@@ -21,7 +21,7 @@
                         <h5 class="card-title">{{ trouser.brandname }}</h5>
                         <p><strong>Color:</strong> {{ trouser.color }}</p>
                         <p><strong>Price:</strong> ₹{{ trouser.price }}</p>
-                        <a href="/addtocart/" class="btn btn-primary">Add to Cart</a>
+                        <a href="{% url 'add_to_cart' trouser.id 'trousers' %}" class="btn btn-primary">Add to Cart</a>
                     </div>
                 </div>
             </div>

@@ -1,36 +1,41 @@
 .navbar {
     background-color: #333;
     padding: 10px 20px;
+    position: sticky;    
+    top: 0;
+    z-index: 1000;
 }
-
 .navbar-brand {
     color: #fff !important;
     font-size: 1.5em;
     font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.navbar-brand:hover {
+    color: cadetblue !important;
 }
 
 .navbar-nav .nav-link {
     color: #fff !important;
     margin-right: 1em;
     padding: 10px 15px;
+    transition: all 0.3s ease;
+    border-radius: 5px;
 }
 
 .navbar-nav .nav-link:hover {
     color: cadetblue !important;
     background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
 }
 
-/* Toggler Button */
 .navbar-toggler {
     border-color: #fff;
 }
 
 .navbar-toggler-icon {
-    color: #fff;
+    filter: invert(1); 
 }
-
-/* Custom Dropdown Styles */
 ul {
     list-style: none;
     padding: 0;
@@ -50,21 +55,25 @@ ul li a {
     font-size: 18px;
     color: white;
 }
-
 ul li ul.dropdown-menu {
     display: none;
     position: absolute;
     background-color: #333;
     padding: 0;
     margin: 0;
-    min-width: 150px;
+    min-width: 180px;
     z-index: 999;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease-in-out;
 }
 
 ul li:hover ul.dropdown-menu {
     display: block;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 ul li ul.dropdown-menu li {
@@ -75,9 +84,26 @@ ul li ul.dropdown-menu li a {
     padding: 10px 15px;
     color: #fff;
     white-space: nowrap;
+    transition: background 0.3s ease;
 }
 
 ul li ul.dropdown-menu li a:hover {
-    background-color:rgba(255, 255, 255, 0.1);
-    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: cadetblue;
+}
+
+@media (max-width: 768px) {
+    .navbar-nav {
+        text-align: center;
+    }
+
+    ul li {
+        display: block;
+        width: 100%;
+    }
+
+    ul li ul.dropdown-menu {
+        position: static;
+        box-shadow: none;
+    }
 }
